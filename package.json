@@ -1,19 +1,55 @@
 {
-  "private": true,
+  "name": "tplink-web-panel",
+  "version": "1.0.0",
+  "author": "Milan M <milanmdev@gmail.com>",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start -p 4461",
+    "lint": "next lint",
+    "prepare": "husky install",
+    "pull": "git fetch origin && git reset --hard origin/main && yarn install && yarn build"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.7.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-brands-svg-icons": "^5.15.4",
+    "@fortawesome/free-regular-svg-icons": "^5.15.4",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.15",
+    "@heroicons/react": "^1.0.5",
+    "@milanmdev/tplink-cloud-api": "^1.0.0",
+    "cross-env": "^7.0.3",
+    "framer-motion": "^4",
     "next": "latest",
     "react": "^17.0.2",
+    "react-alert": "^7.0.3",
     "react-dom": "^17.0.2",
-    "tplink-cloud-api": "^0.8.1"
+    "swr": "^1.1.1"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.0",
+    "eslint": "8.5.0",
+    "eslint-config-next": "12.0.7",
+    "husky": "^7.0.4",
     "postcss": "^8.4.4",
     "tailwindcss": "^3.0.0"
-  }
+  },
+  "browser": {
+    "child_process": false
+  },
+  "lint-staged": {
+    "*.{jsx, js}": [
+      "yarn eslint --fix",
+      "yarn prettier --write"
+    ]
+  },
+  "browserslist": [
+    ">0.3%",
+    "not ie 11",
+    "not dead",
+    "not op_mini all"
+  ]
 }

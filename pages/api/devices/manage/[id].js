@@ -7,7 +7,6 @@ export default async function deviceAPI(req, res) {
   if (!req.query || !req.query.id || !req.body)
     return res.status(400).send("Bad request");
   let client = await initialClient;
-  if (!client) return null;
 
   let deviceFetch = await client.findDevice(req.query.id);
   if (!deviceFetch)
@@ -26,7 +25,9 @@ export default async function deviceAPI(req, res) {
 
   let extraData = {
     status: await device.getRelayState(),
-    powerConsumption: await device.getPowerUsage(),
+    powerConsumption: device.getPowerUsage
+      ? await device.getPowerUsage()
+      : null,
   };
 
   res.status(200).json(new Device(device.device, extraData));

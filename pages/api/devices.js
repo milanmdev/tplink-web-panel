@@ -3,7 +3,6 @@ const { Device } = require("../../utils/models/device");
 
 export default async function devicesAPI(req, res) {
   let client = await initialClient;
-  if (!client) return null;
 
   let deviceList = await client.getDeviceList().catch((e) => undefined);
   if (!deviceList)
@@ -17,7 +16,7 @@ export default async function devicesAPI(req, res) {
       if (!device) return null;
       let extraData = {
         status: await deviceData.getRelayState(),
-        powerConsumption: (await device.getPowerUsage)
+        powerConsumption: device.getPowerUsage
           ? await device.getPowerUsage()
           : null,
       };

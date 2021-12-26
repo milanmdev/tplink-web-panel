@@ -3,6 +3,7 @@ const { Device } = require("../../utils/models/device");
 
 export default async function devicesAPI(req, res) {
   let client = await initialClient;
+  if (!client) return null;
 
   let deviceList = await client.getDeviceList().catch((e) => undefined);
   if (!deviceList)

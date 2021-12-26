@@ -7,6 +7,7 @@ export default async function deviceAPI(req, res) {
   if (!req.query || !req.query.id || !req.body)
     return res.status(400).send("Bad request");
   let client = await initialClient;
+  if (!client) return null;
 
   let deviceFetch = await client.findDevice(req.query.id);
   if (!deviceFetch)

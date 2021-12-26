@@ -16,7 +16,7 @@ export default async function devicesAPI(req, res) {
       if (!device) return null;
       let extraData = {
         status: await deviceData.getRelayState(),
-        powerConsumption: (await device.getPowerUsage)
+        powerConsumption: device.getPowerUsage
           ? await device.getPowerUsage()
           : null,
       };

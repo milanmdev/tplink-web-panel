@@ -25,7 +25,9 @@ export default async function deviceAPI(req, res) {
 
   let extraData = {
     status: await device.getRelayState(),
-    powerConsumption: await device.getPowerUsage(),
+    powerConsumption: device.getPowerUsage
+      ? await device.getPowerUsage()
+      : null,
   };
 
   res.status(200).json(new Device(device.device, extraData));

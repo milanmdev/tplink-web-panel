@@ -17,7 +17,7 @@ A web panel to manage TP-Link/Kasa smart home devices.
 2. Install dependencies via the `yarn install` command
 3. Rename the `.env.example` file to `.env` and fill out the information requested (TP-Link account email & password).
 
-## Running `sanitizer-web`
+## Running the panel
 
 ### Production:
 

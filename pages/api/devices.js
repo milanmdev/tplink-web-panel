@@ -2,6 +2,17 @@ const initialClient = require("../../utils/tpLinkClient");
 const { Device } = require("../../utils/models/device");
 
 export default async function devicesAPI(req, res) {
+  /* Authroization */
+  if (!req.headers || !req.headers.authorization)
+    return res.status(401).send("Unauthorized");
+  let authorization = req.headers.authorization.split(" ");
+  if (!authorization) return res.status(401).send("Unauthorized");
+  if (
+    authorization[0] !== process.env.AUTH_USERNAME ||
+    authorization[1] !== process.env.AUTH_PASSWORD
+  )
+    return res.status(401).send("Unauthorized");
+
   let client = await initialClient;
 
   let deviceList = await client.getDeviceList().catch((e) => undefined);

@@ -6,6 +6,17 @@ export default async function deviceAPI(req, res) {
     return res.status(405).json({ message: "Method now allowed" });
   if (!req.query || !req.query.id || !req.body)
     return res.status(400).send("Bad request");
+  /* Authroization */
+  if (!req.headers || !req.headers.authorization)
+    return res.status(401).send("Unauthorized");
+  let authorization = req.headers.authorization.split(" ");
+  if (!authorization) return res.status(401).send("Unauthorized");
+  if (
+    authorization[0] !== process.env.AUTH_USERNAME ||
+    authorization[1] !== process.env.AUTH_PASSWORD
+  )
+    return res.status(401).send("Unauthorized");
+
   let client = await initialClient;
 
   let deviceFetch = await client.findDevice(req.query.id);

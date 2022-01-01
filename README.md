@@ -15,7 +15,7 @@ A web panel to manage TP-Link/Kasa smart home devices.
 1. Run `git clone https://github.com/milanmdev/tplink-web-panel.git`
 
 2. Install dependencies via the `yarn install` command
-3. Rename the `.env.example` file to `.env` and fill out the information requested (TP-Link account email & password).
+3. Rename the `.env.example` file to `.env` and fill out the information requested (TP-Link account email & password, auth username & password [you can make these whatever you'd like]).
 
 ## Running the panel
 

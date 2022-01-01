@@ -1,6 +1,6 @@
 {
   "name": "tplink-web-panel",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Milan M <milanmdev@gmail.com>",
   "scripts": {
     "dev": "next dev",

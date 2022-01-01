@@ -1,14 +1,57 @@
 import useSWR from "swr";
+import React, { useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useAlert } from "react-alert";
 import { RefreshIcon } from "@heroicons/react/solid";
+import { LogoutIcon } from "@heroicons/react/outline";
 import { Switch } from "@chakra-ui/react";
-import devicesAPI from "./api/devices";
-
-const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function Index() {
   const alert = useAlert();
+  const router = useRouter();
+
+  useEffect(() => {
+    let UsernameData = localStorage.getItem("username");
+    let PasswordData = localStorage.getItem("password");
+    if (UsernameData && PasswordData) {
+      checkPass();
+    } else {
+      return router.push("/login");
+    }
+    async function checkPass() {
+      let checkCredentials = await fetch(
+        window.location.origin + "/api/check_credentials",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username: UsernameData,
+            password: PasswordData,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+        .then(async (res) => await res.json())
+        .catch((e) => undefined);
+      console.log(checkCredentials);
+
+      if (!checkCredentials || !checkCredentials.valid)
+        return router.push("/login");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (typeof window !== "undefined") {
+    var UsernameData = localStorage.getItem("username");
+    var PasswordData = localStorage.getItem("password");
+  }
+
+  const fetcher = (url) =>
+    fetch(url, {
+      headers: { Authorization: `${UsernameData} ${PasswordData}` },
+    }).then((res) => res.json());
   const { data, error, mutate } = useSWR(`/api/devices`, fetcher);
 
   let errorResponse = (
@@ -59,12 +102,31 @@ export default function Index() {
     console.log("Refreshing TP-Link Data");
   }, 600000);
 
+  async function logout() {
+    try {
+      localStorage.removeItem("username");
+      localStorage.removeItem("password");
+      router.push("/login");
+    } catch (e) {
+      console.log(e);
+      alert.error(
+        "An error has occured while processing your request. Please try again later."
+      );
+    }
+  }
+
   return (
     <>
       <div className="container mx-auto px-4 md:px-12">
         <div className="flex relative items-end mb-4 mt-2">
           <button
-            className="px-4 py-2 text-white transition duration-500 bg-gray-500 border border-gray-500 rounded-md select-none ease hover:bg-gray-600 focus:outline-none focus:shadow-outline"
+            className="px-4 py-2 text-white transition duration-500 bg-red-500 border border-red-500 rounded-md select-none ease hover:bg-red-600 focus:outline-none focus:shadow-outline"
+            onClick={logout}
+          >
+            <LogoutIcon className="w-6 inline-block" />
+          </button>
+          <button
+            className="ml-3 px-4 py-2 text-white transition duration-500 bg-gray-500 border border-gray-500 rounded-md select-none ease hover:bg-gray-600 focus:outline-none focus:shadow-outline"
             onClick={mutate}
           >
             <RefreshIcon className="w-6 inline-block" />
@@ -117,6 +179,7 @@ export default function Index() {
                                     }),
                                     headers: {
                                       "Content-Type": "application/json",
+                                      Authorization: `${UsernameData} ${PasswordData}`,
                                     },
                                   }
                                 )

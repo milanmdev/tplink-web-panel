@@ -11,7 +11,7 @@
     "pull": "git fetch origin && git reset --hard origin/main && yarn install && yarn build"
   },
   "dependencies": {
-    "@chakra-ui/react": "^1.7.3",
+    "@chakra-ui/react": "1.7.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@fortawesome/fontawesome-svg-core": "^1.2.36",

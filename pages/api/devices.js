@@ -23,16 +23,21 @@ export default async function devicesAPI(req, res) {
 
   let devices = await Promise.all(
     deviceList.map(async (device) => {
-      let deviceData = await client.newDevice(device);
-      if (!device) return null;
-      let extraData = {
-        status: await deviceData.getRelayState(),
-        powerConsumption: device.getPowerUsage
-          ? await device.getPowerUsage()
-          : null,
-      };
+      try {
+        if (!device) return null;
+        let deviceData = await client.newDevice(device);
+        if (!deviceData) return null;
+        let extraData = {
+          status: await deviceData.getRelayState(),
+          powerConsumption: device.getPowerUsage
+            ? await device.getPowerUsage()
+            : null,
+        };
 
-      return new Device(device, extraData);
+        return new Device(device, extraData);
+      } catch (e) {
+        return null;
+      }
     })
   );
   res.status(200).json(devices);

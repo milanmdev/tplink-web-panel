@@ -147,6 +147,7 @@ export default function Index() {
           {/*flex flex-wrap*/}
           {data &&
             data.map((device, i) => {
+              if (!device) return null;
               if (device.type == "IOT.SMARTPLUGSWITCH")
                 return (
                   <div className="w-full px-4 py-4 col-span-1 flex" key={i}>
